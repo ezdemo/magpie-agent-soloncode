@@ -145,7 +145,16 @@ test("real Magpie loads the module, switches models, restores typed config and s
     writeFileSync(promptPath, "# My existing preferences\n");
     const library = {
       instructions: { agents: ["soloncode"] },
-      mcp: [{ name: "library-fixture", transport: "stdio", command: "fixture-command", args: ["--test"], agents: ["soloncode"] }],
+      mcp: [
+        { name: "library-fixture", transport: "stdio", command: "fixture-command", args: ["--test"], agents: ["soloncode"] },
+        {
+          name: "library-env-ref",
+          transport: "http",
+          url: "https://example.com/mcp",
+          headers: { Authorization: "Bearer ${SOLONCODE_TEST_TOKEN}" },
+          agents: ["soloncode"],
+        },
+      ],
       skills: [{ name: "soloncode-fixture", agents: ["soloncode"] }],
       copySkills: true,
     };
@@ -158,17 +167,17 @@ test("real Magpie loads the module, switches models, restores typed config and s
     assert.match(readFileSync(path.join(home, ".soloncode", "skills", "soloncode-fixture", "SKILL.md"), "utf8"), /Use the fixture/);
     const synced = readConfig();
     assert.equal(synced.mcpServers["library-fixture"].command, "fixture-command");
+    assert.equal(synced.mcpServers["library-fixture"].transport, "stdio");
+    assert.equal(synced.mcpServers["library-env-ref"], undefined);
     assert.equal(synced.mcpServers.mine.command, "mine");
     assert.deepEqual(synced.custom, minimal.custom);
 
     // Resource assignments are independent of the Agent model connection.
     // Untick SolonCode in the library to remove only library-managed content.
-    const assigned = JSON.parse(readFileSync(libraryPath, "utf8"));
-    assigned.instructions.agents = [];
-    assigned.mcp[0].agents = [];
-    assigned.skills[0].agents = [];
-    writeFileSync(libraryPath, JSON.stringify(assigned));
-    run("library", "sync");
+    run("library", "instructions", "agents", "none");
+    run("library", "mcp", "agents", "library-fixture", "none");
+    run("library", "mcp", "agents", "library-env-ref", "none");
+    run("library", "skill", "agents", "soloncode-fixture", "none");
     assert.equal(readFileSync(promptPath, "utf8").trim(), "# My existing preferences");
     const cleaned = readConfig();
     assert.equal(cleaned.mcpServers["library-fixture"], undefined);

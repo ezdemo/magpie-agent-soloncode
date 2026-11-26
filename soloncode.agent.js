@@ -17,7 +17,11 @@ export const agent = {
     skills: "~/.soloncode/skills",
     instructions: "~/.soloncode/AGENTS.md",
     mcp: "~/.soloncode/settings.json",
-    mcpFormat: "claude",
+    // Devin's shape is also SolonCode's: transport plus command/args/env or
+    // url/headers under mcpServers. Unlike the Claude shape it does not tell
+    // Magpie that SolonCode expands ${NAME}; servers needing expansion are
+    // skipped instead of sending the placeholder as a credential.
+    mcpFormat: "devin",
   },
   notice: "请重启 SolonCode 服务以加载模型配置；已有会话可能保留自己的模型状态，请新建会话或重新选择 Magpie 模型。",
 };

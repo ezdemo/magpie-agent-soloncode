@@ -71,6 +71,8 @@ Magpie 模型列表刷新时会重新调用 `connect`，同步供应商目录和
 
 MCP 与模型配置共用同一个 `settings.json`。Magpie 写入 `mcpServers` 时应保留文件中的模型、供应商和其他设置；集成测试覆盖了这一行为。资源分配与模型连接开关彼此独立：`magpie soloncode default` 恢复模型配置；要停止下发资源，请在资源库取消 SolonCode 的勾选，再同步。
 
+插件按 `devin` 兼容格式写入 MCP 条目（`transport` 加 `command` / `args` / `env` 或 `url` / `headers`），这些字段会被 SolonCode 正常识别。SolonCode 当前不会在 MCP 配置中展开 `${NAME}` 环境变量引用；因此包含这类引用的服务不会被 Magpie 下发给 SolonCode，避免把占位符原样当作凭据发送。此类服务请改用实际值，或等 SolonCode 支持变量展开后再调整格式。
+
 ```sh
 magpie library sync
 ```

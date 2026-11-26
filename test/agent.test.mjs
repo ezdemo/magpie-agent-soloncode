@@ -140,7 +140,7 @@ test("library targets match SolonCode's instruction, skill and MCP readers", () 
     skills: "~/.soloncode/skills",
     instructions: "~/.soloncode/AGENTS.md",
     mcp: "~/.soloncode/settings.json",
-    mcpFormat: "claude",
+    mcpFormat: "devin",
   });
 });
 
