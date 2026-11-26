@@ -16,6 +16,8 @@ test("package is an Agent-only plugin with an installable entry point", async ()
   assert.equal(agent.model, "defaultModel");
   assert.equal(agent.id, "soloncode");
   assert.equal(agent.bin, "soloncode");
+  assert.equal(agent.icon, "https://solon.noear.org/img/solon/favicon256.png");
+  assert.equal(pkg.magpie.icon, agent.icon);
   assert.equal(agent.prefix, undefined);
 });
 
