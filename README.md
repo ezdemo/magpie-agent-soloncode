@@ -1,6 +1,6 @@
 # SolonCode Agent for Magpie
 
-<img src="assets/soloncode-logo.svg" alt="SolonCode" width="80" height="80">
+<img src="https://solon.noear.org/img/solon/favicon256.png" alt="SolonCode" width="80" height="80">
 
 让 [SolonCode](https://github.com/ezdemo/soloncode) 出现在 Magpie 的 **Agent** 页面，使用 Magpie 管理的供应商、模型和路由组。插件把 Magpie 网关适配为 SolonCode 的一个 OpenAI 兼容供应商，并同步完整模型目录、上下文长度和推理强度默认值。
 
